@@ -103,6 +103,66 @@ Co-Makeは、材料認識・作品選択・工程分担・制作支援・進捗�
 | i18n | react-i18next | 日英表示 |
 | Test | Vitest / Firebase Emulator | ロジック・認可の検証 |
 
+## クイックスタート
+
+> 開発用リポジトリの作成後、`YOUR_REPO` を実際のリポジトリ名に置き換えます。Node.jsの固定バージョンは、React環境構築時に作成する `.nvmrc` を正とします。
+
+### 前提環境
+
+- Git
+- Node.js（`.nvmrc` に記載されたバージョン）
+- npm（Node.js同梱版）
+- Firebase CLI（Firebase機能をローカルで確認する場合）
+
+### セットアップ
+
+```bash
+git clone https://github.com/2026-GDGoC-UoA34/YOUR_REPO.git
+cd YOUR_REPO
+nvm use
+npm ci
+cp .env.example .env.local
+npm run dev
+```
+
+`nvm use` でバージョンが見つからない場合は、`nvm install` を先に実行します。環境変数の値はチーム内の安全な方法で共有し、GitHubやチャットへ直接貼り付けません。
+
+### 品質確認
+
+PRを出す前に、次のコマンドをすべて通します。
+
+```bash
+npm run lint
+npm run test
+npm run build
+```
+
+Firebase Emulatorを導入した後は、Security RulesとFunctionsもローカルで確認します。正式なコマンドは開発用リポジトリの `package.json` に統一します。
+
+### 環境変数
+
+- 実値は `.env.local` に保存し、commitしない
+- 変数名と説明だけを `.env.example` に記載する
+- Gemini APIキーはブラウザへ渡さず、Cloud FunctionsのSecretとして管理する
+- `VITE_` を付けた値はクライアントへ公開される前提で扱う
+- キーを誤ってpushした場合は、履歴を消すだけで済ませず直ちに無効化・再発行する
+
+### 推奨ディレクトリ構成
+
+```text
+.
+├── .github/          # Issue・PRテンプレート、CI
+├── docs/             # 設計、Decision Log、デモ資料
+├── functions/        # Cloud Functions
+├── public/           # 静的ファイル
+├── src/              # Reactアプリ
+├── .env.example      # 環境変数名の見本（実値なし）
+├── .gitignore
+├── .nvmrc            # Node.js固定バージョン
+├── package.json
+└── README.md
+```
+
 ### 技術選定の方針
 
 - 主要言語をTypeScriptへ統一する
